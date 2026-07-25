@@ -15,13 +15,13 @@ export default function LoginPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const result = await login({ email, password, remember });
-
-    if (result.ok) {
-      router.push("/dashboard");
-    } else {
-      console.error(result.message);
+    try {
+      await login({ email, password, remember });
+    } catch (error) {
+      console.error(error);
     }
+
+    router.replace("/dashboard");
   };
 
   return (
