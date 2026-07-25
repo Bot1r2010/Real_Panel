@@ -145,7 +145,6 @@ export function AuthProvider({ children }) {
           },
         });
       } catch {
-        // игнорируем ошибку logout, чтобы всё равно очистить локальную сессию
       }
     }
 
