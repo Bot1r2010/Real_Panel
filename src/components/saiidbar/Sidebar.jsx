@@ -13,17 +13,17 @@ export default function Sidebar() {
             <circle cx="23" cy="23" r="2" fill="#ffffff" />
           </svg>
       </div>
-      <nav className="space-y-1">
-        <Link href="/dashboard" className="block py-2.5 px-3 rounded-md font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-950 transition">
+      <nav className="space-y-1 ">
+        <Link href="/dashboard" className="block py-2.5 px-3 rounded-md font-medium text-gray-700 border-b-red-400 hover:bg-gray-100 hover:text-gray-950 transition">
           Dashboard
         </Link>
-        <Link href="/products" className="block py-2.5 px-3 rounded-md font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-950 transition">
+        <Link href="/products" className="block py-2.5 px-3 rounded-md font-medium text-gray-700 border-b-red-400 hover:bg-gray-100 hover:text-gray-950 transition">
           Products
         </Link>
-        <Link href="/users" className="block py-2.5 px-3 rounded-md font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-950 transition">
+        <Link href="/users" className="block py-2.5 px-3 rounded-md font-medium text-gray-700 border-b-red-400 hover:bg-gray-100 hover:text-gray-950 transition">
           Users
         </Link>
-        <Link href="/profile" className="block py-2.5 px-3 rounded-md font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-950 transition">
+        <Link href="/profile" className="block py-2.5 px-3 rounded-md font-medium text-gray-700 border-b-red-400 hover:bg-gray-100 hover:text-gray-950 transition">
           Profile
         </Link>
       </nav>
