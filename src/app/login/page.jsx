@@ -69,13 +69,12 @@ export default function LoginPage() {
 
 
 
-    {/* Card */}
     <div className="relative z-10 w-[430px] rounded-3xl border border-white/10 bg-[#2d2b29]/90 p-10 shadow-2xl backdrop-blur-2xl">
 
 
 
 
-      {/* Logo */}
+    
       <div className="mb-8 flex flex-col items-center">
 
         <div className="relative mb-5">
