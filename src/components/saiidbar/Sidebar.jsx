@@ -14,7 +14,7 @@ export default function Sidebar() {
         </svg>
         <div className="text-center">
           <p className="text-lg font-bold text-gray-900">ControlPoint</p>
-          <p className="text-sm text-gray-400 mt-0.5">Админ-панель</p>
+          <p className="text-sm text-gray-500 mt-0.5">Админ-панель</p>
         </div>
       </div>
 
