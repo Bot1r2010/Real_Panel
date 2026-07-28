@@ -31,7 +31,7 @@ export default function Sidebar() {
             Dashboard
           </Link>
           <Link
-            href="/products"
+            href="/product"
             className="block py-2.5 px-4 rounded-xl font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-all duration-200"
           >
             Products
