@@ -20,7 +20,7 @@ export default function Sidebar() {
             cy="23"
             r="19"
             fill="none"
-            stroke="#d6293a"
+            stroke="#2d2a2a"
             strokeWidth="2.5"
             opacity="0.35"
           />
