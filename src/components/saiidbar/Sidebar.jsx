@@ -50,8 +50,8 @@ export default function Sidebar() {
           </Link>
 
           <Link
-            href="/products"
-            className="block rounded-xl px-4 py-3 font-medium text-gray-600 hover:bg-indigo-50 hover:text-indigo-600 transition"
+            href="/product"
+            className="block py-2.5 px-4 rounded-xl font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-all duration-200"
           >
              Products
           </Link>
