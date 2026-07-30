@@ -21,7 +21,7 @@ export default function LoginPage() {
     const user = localStorage.getItem("User");
 
     if (accessToken && refreshToken && user) {
-      router.replace("/Sidebar");
+      router.replace("/dashboard");
     }
   }, [router]);
 
