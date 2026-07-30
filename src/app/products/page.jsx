@@ -265,29 +265,80 @@ export default function ProductsPage() {
               </div>
             </div>
           ))}
+        </div>
 
-          {pageItems.length === 0 && (
-            <div className="bg-white rounded-2xl p-16 text-center border border-slate-200/60 shadow-sm text-slate-400 font-medium">
-              Mahsulot topilmadi
-            </div>
-          )}
+        {showModal && (
+          <div className="fixed inset-0 bg-black/40 flex justify-center items-center z-50">
+            <div className="bg-white p-6 rounded-2xl w-[450px]">
+              <h2 className="text-2xl font-bold mb-4">Add Product</h2>
 
-          {totalPages > 1 && (
-            <div className="bg-white rounded-2xl p-3 shadow-sm border border-slate-200/60 flex flex-col sm:flex-row justify-between items-center gap-3">
-              <p className="text-xs text-slate-400">
-                <span className="font-semibold text-slate-600">{(page - 1) * PER_PAGE + 1}–{Math.min(page * PER_PAGE, totalItems)}</span> / {totalItems}
-              </p>
-              <div className="flex items-center gap-1">
-                <button disabled={page <= 1} onClick={() => setPage(1)} className="w-8 h-8 rounded-lg bg-white border border-slate-200 text-xs font-medium text-slate-500 disabled:opacity-25 hover:bg-slate-50 transition flex items-center justify-center">«</button>
-                <button disabled={page <= 1} onClick={() => setPage(p => p - 1)} className="w-8 h-8 rounded-lg bg-white border border-slate-200 text-xs font-medium text-slate-500 disabled:opacity-25 hover:bg-slate-50 transition flex items-center justify-center">‹</button>
-                {Array.from({ length: totalPages }, (_, i) => i + 1).map(p => (
-                  <button key={p} onClick={() => setPage(p)}
-                    className={`w-8 h-8 rounded-lg text-xs font-bold transition flex items-center justify-center ${page === p ? "bg-red-600 text-white shadow-sm" : "bg-white border border-slate-200 text-slate-500 hover:bg-slate-50"}`}>
-                    {p}
-                  </button>
-                ))}
-                <button disabled={page >= totalPages} onClick={() => setPage(p => p + 1)} className="w-8 h-8 rounded-lg bg-white border border-slate-200 text-xs font-medium text-slate-500 disabled:opacity-25 hover:bg-slate-50 transition flex items-center justify-center">›</button>
-                <button disabled={page >= totalPages} onClick={() => setPage(totalPages)} className="w-8 h-8 rounded-lg bg-white border border-slate-200 text-xs font-medium text-slate-500 disabled:opacity-25 hover:bg-slate-50 transition flex items-center justify-center">»</button>
+              <input
+                placeholder="Title"
+                className="w-full border p-3 rounded-lg mb-3"
+                onChange={(e) =>
+                  setNewProduct({ ...newProduct, title: e.target.value })
+                }
+              />
+
+              <input
+                placeholder="Description"
+                className="w-full border p-3 rounded-lg mb-3"
+                onChange={(e) =>
+                  setNewProduct({ ...newProduct, description: e.target.value })
+                }
+              />
+
+              <input
+                placeholder="Price"
+                type="number"
+                className="w-full border p-3 rounded-lg mb-3"
+                onChange={(e) =>
+                  setNewProduct({ ...newProduct, price: e.target.value })
+                }
+              />
+
+              <input
+                type="url"
+                placeholder="Image URL"
+                className="w-full border p-3 rounded-lg mb-3"
+                onChange={(e) =>
+                  setNewProduct({ ...newProduct, image: e.target.value })
+                }
+              />
+
+              <input
+                placeholder="Stock"
+                type="number"
+                className="w-full border p-3 rounded-lg mb-3"
+                onChange={(e) =>
+                  setNewProduct({ ...newProduct, stock: e.target.value })
+                }
+              />
+
+              <input
+                placeholder="Rating"
+                type="number"
+                step="0.1"
+                className="w-full border p-3 rounded-lg mb-5"
+                onChange={(e) =>
+                  setNewProduct({ ...newProduct, rating: e.target.value })
+                }
+              />
+
+              <div className="flex justify-end gap-3">
+                <button
+                  onClick={() => setShowModal(false)}
+                  className="px-5 py-2 bg-gray-200 rounded-lg"
+                >
+                  Cancel
+                </button>
+
+                <button
+                  onClick={addProduct}
+                  className="px-5 py-2 bg-red-600 text-white rounded-lg"
+                >
+                  Add
+                </button>
               </div>
             </div>
           )}
