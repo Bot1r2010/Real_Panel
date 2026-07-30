@@ -14,7 +14,7 @@ export default function Sidebar() {
   }
 
   return (
-    <aside className="fixed left-0 top-0 h-screen w-64 bg-white border-r border-gray-200 shadow-sm flex flex-col justify-between z-50">
+   <aside className="w-64 shrink-0 h-screen overflow-hidden bg-white border-r shadow-md flex flex-col justify-between">
       <div>
         <div className="flex items-center justify-center py-6 border-b">
           <svg width="58" height="58" viewBox="0 0 46 46">
@@ -67,7 +67,7 @@ export default function Sidebar() {
             href="/profile"
             className="block rounded-xl px-4 py-3 font-medium text-gray-600 hover:bg-indigo-50 hover:text-indigo-600 transition"
           >
-             Profile
+             Categories
           </Link>
         </nav>
       </div>
