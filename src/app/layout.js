@@ -13,8 +13,19 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className="min-h-screen bg-slate-50 text-slate-900">
         <AuthProvider>
-          {!isAuthRoute && <Sidebar />}
-          <main className={isAuthRoute ? 'min-h-screen bg-slate-50' : 'flex-1 p-6 bg-white'}>{children}</main>
+          {isAuthRoute ? (
+            <main className="min-h-screen">
+              {children}
+            </main>
+          ) : (
+            <div className="flex min-h-screen">
+              <Sidebar />
+
+              <main className="flex-1 p-6 overflow-auto">
+                {children}
+              </main>
+            </div>
+          )}
         </AuthProvider>
       </body>
     </html>
