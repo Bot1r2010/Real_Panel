@@ -1,3 +1,5 @@
+import User from './User';
+
 export default function SingleUserPage() {
-  return <div></div>;
+  return <User />;
 }
