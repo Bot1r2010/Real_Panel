@@ -152,7 +152,7 @@ export default function UsersPage() {
             />
 
             <div className="flex gap-3">
-              <button className="flex-1 bg-blue-600 text-white py-2 rounded-xl">
+              <button className="flex-1 bg-blue-500 text-white py-2 rounded-xl">
                 Save
               </button>
 
