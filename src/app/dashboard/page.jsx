@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import axios from "axios";
+import CountUp from "react-countup";
 
 import {
   Chart as ChartJS,
@@ -10,7 +11,7 @@ import {
   CategoryScale,
   LinearScale,
   Tooltip,
-  Legend,
+  Legend
 } from "chart.js";
 
 import { Pie, Bar } from "react-chartjs-2";
@@ -47,13 +48,10 @@ export default function DashboardPage() {
 
   const totalProducts = products.length;
 
-  const totalRevenue = products.reduce(
-    (sum, item) => sum + item.price,
-    0
-  );
+  const totalRevenue = products.reduce((sum, item) => sum + item.price, 0);
 
   const totalCategories = [
-    ...new Set(products.map((item) => item.category?.name)),
+    ...new Set(products.map((item) => item.category?.name))
   ].length;
 
   const totalUsers = 42;
@@ -74,15 +72,9 @@ export default function DashboardPage() {
     datasets: [
       {
         data: Object.values(categoryCount),
-        backgroundColor: [
-          "#ef4444",
-          "#3b82f6",
-          "#10b981",
-          "#f59e0b",
-          "#8b5cf6",
-        ],
-      },
-    ],
+        backgroundColor: ["#ef4444", "#3b82f6", "#10b981", "#f59e0b", "#8b5cf6"]
+      }
+    ]
   };
 
   // Bar Chart
@@ -96,99 +88,85 @@ export default function DashboardPage() {
 
         data: products.map((item) => item.stock),
 
-        backgroundColor: "#dc2626",
-      },
-    ],
+        backgroundColor: "#dc2626"
+      }
+    ]
   };
 
   return (
-  <div className="p-8 bg-slate-100 h-100vh">
+    <div className="p-8 bg-slate-100 h-100vh">
+      <div className="flex justify-between items-center mb-8">
+        <h1 className="text-4xl font-bold text-red-600">Dashboard</h1>
 
-    <div className="flex justify-between items-center mb-8">
-      <h1 className="text-4xl font-bold text-red-600">
-        Dashboard
-      </h1>
-
-      <div className="font-semibold text-lg">
-        Admin
-      </div>
-    </div>
-
-    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
-
-      <div className="bg-white rounded-2xl shadow-lg p-6">
-        <p className="text-gray-500">Products</p>
-
-        <h2 className="text-4xl font-bold mt-2">
-          {totalProducts}
-        </h2>
+        <div className="font-semibold text-lg">Admin</div>
       </div>
 
-      <div className="bg-white rounded-2xl shadow-lg p-6">
-        <p className="text-gray-500">Users</p>
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
+        <div className="bg-white rounded-2xl shadow-lg p-6">
+          <p className="text-gray-500">Products</p>
 
-        <h2 className="text-4xl font-bold mt-2">
-          {totalUsers}
-        </h2>
-      </div>
+          <h2 className="text-4xl font-bold mt-2">
+            <CountUp end={totalProducts} duration={4} />
+          </h2>
+        </div>
 
-      <div className="bg-white rounded-2xl shadow-lg p-6">
-        <p className="text-gray-500">Categories</p>
+        <div className="bg-white rounded-2xl shadow-lg p-6">
+          <p className="text-gray-500">Users</p>
 
-        <h2 className="text-4xl font-bold mt-2">
-          {totalCategories}
-        </h2>
-      </div>
+          <h2 className="text-4xl font-bold mt-2">
+            <CountUp end={totalUsers} duration={4} />
+          </h2>
+        </div>
 
-      <div className="bg-white rounded-2xl shadow-lg p-6">
-        <p className="text-gray-500">Revenue</p>
+        <div className="bg-white rounded-2xl shadow-lg p-6">
+          <p className="text-gray-500">Categories</p>
 
-        <h2 className="text-3xl font-bold mt-2 text-red-600">
-          {totalRevenue.toLocaleString()} so'm
-        </h2>
-      </div>
+          <h2 className="text-4xl font-bold mt-2">
+            <CountUp end={totalCategories} duration={4} />
+          </h2>
+        </div>
 
-    </div>
+        <div className="bg-white rounded-2xl shadow-lg p-6">
+          <p className="text-gray-500">Revenue</p>
 
-    <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 mt-8">
-
-      <div className="bg-white rounded-2xl shadow-lg p-6">
-        <h2 className="text-xl font-bold mb-6">
-          Products by Category
-        </h2>
-
-        <div className="h-[380px]">
-          <Pie
-            data={pieData}
-            options={{
-              maintainAspectRatio: false,
-            }}
-          />
+          <h2 className="text-3xl font-bold mt-2 text-red-600">
+            <CountUp end={totalRevenue} duration={4.5} separator=" " /> so'm
+          </h2>
         </div>
       </div>
 
-      <div className="bg-white rounded-2xl shadow-lg p-6">
-        <h2 className="text-xl font-bold mb-6">
-          Stock Statistics
-        </h2>
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 mt-8">
+        <div className="bg-white rounded-2xl shadow-lg p-6">
+          <h2 className="text-xl font-bold mb-6">Products by Category</h2>
 
-        <div className="h-[380px]">
-          <Bar
-            data={barData}
-            options={{
-              maintainAspectRatio: false,
-              plugins: {
-                legend: {
-                  display: false,
-                },
-              },
-            }}
-          />
+          <div className="h-[380px]">
+            <Pie
+              data={pieData}
+              options={{
+                maintainAspectRatio: false
+              }}
+            />
+          </div>
+        </div>
+
+        <div className="bg-white rounded-2xl shadow-lg p-6">
+          <h2 className="text-xl font-bold mb-6">Stock Statistics</h2>
+
+          <div className="h-[380px]">
+            <Bar
+              data={barData}
+              options={{
+                maintainAspectRatio: false,
+                plugins: {
+                  legend: {
+                    display: false
+                  }
+                }
+              }}
+            />
+          </div>
         </div>
       </div>
-
     </div>
-
-  </div>
-);
+  );
 }

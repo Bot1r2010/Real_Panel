@@ -139,8 +139,8 @@ export default function Products() {
   );
 
   return (
-    <div className="min-h-screen bg-slate-100 p-6">
-      <div className="max-w-7xl mx-auto bg-white rounded-3xl shadow-xl p-6">
+    <div className="h-[920px] overflow-hidden overflow-y-auto bg-slate-100 p-6">
+      <div className="max-w-7xl   mx-auto bg-white rounded-3xl shadow-xl p-6">
         <div className="flex flex-col md:flex-row justify-between items-center gap-5 mb-8">
           <input
             type="text"
