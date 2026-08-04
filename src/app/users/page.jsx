@@ -123,16 +123,6 @@ export default function UsersPage() {
                     >
                       Edit
                     </button>
-
-                    <button
-                      onClick={() => {
-                        setSelectedUser(user);
-                        setShowDelete(true);
-                      }}
-                      className="px-3 py-2 rounded-lg bg-red-600 text-white"
-                    >
-                      Delete
-                    </button>
                   </div>
                 </td>
               </tr>
@@ -168,37 +158,6 @@ export default function UsersPage() {
 
               <button
                 onClick={() => setShowEdit(false)}
-                className="flex-1 bg-gray-200 py-2 rounded-xl"
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-      {showDelete && (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-          <div className="bg-white rounded-2xl p-6 w-[400px]">
-            <h2 className="text-2xl font-bold mb-3 text-red-600">
-              Delete User
-            </h2>
-
-            <p className="text-gray-600 mb-6">
-              Are you sure you want to delete
-              <br />
-              <b>
-                {selectedUser?.firstName} {selectedUser?.lastName}
-              </b>
-              ?
-            </p>
-
-            <div className="flex gap-3">
-              <button className="flex-1 bg-red-600 text-white py-2 rounded-xl">
-                Delete
-              </button>
-
-              <button
-                onClick={() => setShowDelete(false)}
                 className="flex-1 bg-gray-200 py-2 rounded-xl"
               >
                 Cancel
