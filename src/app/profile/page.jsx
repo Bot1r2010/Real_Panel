@@ -25,6 +25,7 @@ export default function ProfilePage() {
   const [newName, setNewName] = useState("");
   const [newDescription, setNewDescription] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formError, setFormError] = useState(null);
 
   const loadCategories = useCallback(async (signal) => {
     try {
@@ -47,18 +48,35 @@ export default function ProfilePage() {
 
   const handleAddCategory = async (e) => {
     e.preventDefault();
+    setFormError(null);
+
     const trimmedName = newName.trim();
     if (!trimmedName) {
-      alert("Kategoriya nomini kiriting!");
+      setFormError("Kategoriya nomini kiriting!");
       return;
     }
 
     setIsSubmitting(true);
     try {
-      await axios.post(BASE_URL, {
-        name: trimmedName,
-        description: newDescription.trim(),
-      });
+      const response = await axios.post(
+        BASE_URL,
+        {
+          name: trimmedName,
+          description: newDescription.trim(),
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      // Optimistically add the new category if the API returns it,
+      // then re-sync with the server to stay consistent.
+      const created = response?.data?.data ?? response?.data;
+      if (created && (created.id || created._id)) {
+        setCategories((prev) => [...prev, created]);
+      }
 
       await loadCategories();
 
@@ -66,33 +84,35 @@ export default function ProfilePage() {
       setNewName("");
       setNewDescription("");
     } catch (err) {
-      console.error("Qo'shishda xatolik:", err.response || err);
-      alert("Xatolik yuz berdi: " + (err.response?.data?.message || err.message));
+      console.error("Qo'shishda xatolik:", err);
+
+      let message;
+      if (err.response) {
+        // Server responded with an error status
+        message =
+          err.response.data?.message ||
+          err.response.data?.error ||
+          `Server xatoligi (${err.response.status})`;
+      } else if (err.request) {
+        // Request was made but no response received (network/CORS issue)
+        message =
+          "Serverga ulanib bo'lmadi. Internet aloqasini yoki CORS sozlamalarini tekshiring.";
+      } else {
+        message = err.message || "Noma'lum xatolik yuz berdi";
+      }
+
+      setFormError(message);
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  const handleDeleteCategory = async (id, e) => {
-    e.stopPropagation();
-
-    if (!id) {
-      alert("Xatolik: Kategoriyaning ID si topilmadi!");
-      return;
-    }
-
-    if (!confirm("Haqiqatan ham ushbu kategoriyani oʻchirmoqchimisiz?")) return;
-
-    const previousCategories = categories;
-    setCategories((prev) => prev.filter((item) => getCategoryId(item) !== id));
-
-    try {
-      await axios.delete(`${BASE_URL}/${id}`);
-    } catch (err) {
-      console.error("O'chirishda xatolik:", err.response || err);
-      alert("Oʻchirishda xatolik yuz berdi: " + (err.response?.data?.message || err.message));
-      setCategories(previousCategories);
-    }
+  const closeModal = () => {
+    if (isSubmitting) return;
+    setIsModalOpen(false);
+    setFormError(null);
+    setNewName("");
+    setNewDescription("");
   };
 
   return (
@@ -162,7 +182,7 @@ export default function ProfilePage() {
                 return (
                   <div
                     key={categoryId}
-                    className="group relative bg-white border border-slate-200 rounded-xl p-5 hover:border-red-400 hover:shadow-lg hover:shadow-slate-100 transition-all duration-200 cursor-pointer flex flex-col justify-between h-44"
+                    className="group relative bg-white border border-slate-200 rounded-xl p-5 hover:border-red-400 hover:shadow-lg hover:shadow-slate-100 transition-all duration-200 flex flex-col justify-between h-44"
                   >
                     <div>
                       <div className="flex items-start justify-between gap-2 mb-2">
@@ -177,18 +197,6 @@ export default function ProfilePage() {
                         {category.description || "Tavsif mavjud emas"}
                       </p>
                     </div>
-
-                    <div className="mt-4 pt-3 border-t border-slate-50 flex justify-end">
-                      <button
-                        onClick={(e) => handleDeleteCategory(categoryId, e)}
-                        className="inline-flex items-center gap-1.5 text-slate-400 hover:text-red-600 text-xs font-medium px-2 py-1 rounded-md hover:bg-red-50 transition-colors duration-150"
-                      >
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                        </svg>
-                        Oʻchirish
-                      </button>
-                    </div>
                   </div>
                 );
               })}
@@ -201,6 +209,12 @@ export default function ProfilePage() {
         <div className="fixed inset-0 bg-black bg-opacity-40 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl border border-slate-100 animate-in fade-in zoom-in-95 duration-150">
             <h3 className="text-lg font-bold text-slate-800 mb-4">Yangi kategoriya qoʻshish</h3>
+
+            {formError && (
+              <div className="bg-red-50 border-l-4 border-red-500 p-3 rounded-r-lg mb-4">
+                <p className="text-red-800 text-sm font-medium">{formError}</p>
+              </div>
+            )}
 
             <form onSubmit={handleAddCategory} className="space-y-4">
               <div>
@@ -232,9 +246,9 @@ export default function ProfilePage() {
               <div className="flex justify-end gap-3 pt-2">
                 <button
                   type="button"
-                  onClick={() => setIsModalOpen(false)}
+                  onClick={closeModal}
                   disabled={isSubmitting}
-                  className="px-4 py-2 text-sm font-medium text-slate-500 hover:bg-slate-50 rounded-xl transition-colors"
+                  className="px-4 py-2 text-sm font-medium text-slate-500 hover:bg-slate-50 rounded-xl transition-colors disabled:opacity-50"
                 >
                   Bekor qilish
                 </button>
