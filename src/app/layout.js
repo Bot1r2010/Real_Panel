@@ -4,6 +4,8 @@ import "./globals.css";
 import Sidebar from "@/components/saiidbar/Sidebar";
 import { usePathname } from "next/navigation";
 import { AuthProvider } from "@/context/AuthContext";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function RootLayout({ children }) {
   const pathname = usePathname();
@@ -22,6 +24,15 @@ export default function RootLayout({ children }) {
             </div>
           )}
         </AuthProvider>
+        <ToastContainer
+          position="top-right"
+          autoClose={3000}
+          newestOnTop
+          closeOnClick
+          pauseOnHover
+          draggable
+          theme="dark"
+        />
       </body>
     </html>
   );
