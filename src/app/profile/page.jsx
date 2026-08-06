@@ -27,6 +27,7 @@ export default function ProfilePage() {
   const [newDescription, setNewDescription] = useState("");
   const [newImage, setNewImage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formError, setFormError] = useState(null);
 
   const loadCategories = useCallback(async (signal) => {
     try {
@@ -49,6 +50,8 @@ export default function ProfilePage() {
 
   const handleAddCategory = async (e) => {
     e.preventDefault();
+    setFormError(null);
+
     const trimmedName = newName.trim();
     if (!trimmedName) {
       toast.warning("Kategoriya nomini kiriting!");
@@ -218,6 +221,12 @@ export default function ProfilePage() {
           <div className="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-100 animate-in fade-in zoom-in-95 duration-150">
             <h3 className="text-xl font-extrabold text-slate-800 mb-4">Yangi Kategoriya Yaratish</h3>
 
+            {formError && (
+              <div className="bg-red-50 border-l-4 border-red-500 p-3 rounded-r-lg mb-4">
+                <p className="text-red-800 text-sm font-medium">{formError}</p>
+              </div>
+            )}
+
             <form onSubmit={handleAddCategory} className="space-y-4">
               <div>
                 <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">
@@ -261,7 +270,7 @@ export default function ProfilePage() {
               <div className="flex justify-end gap-3 pt-2">
                 <button
                   type="button"
-                  onClick={() => setIsModalOpen(false)}
+                  onClick={closeModal}
                   disabled={isSubmitting}
                   className="px-4 py-2.5 text-sm font-semibold text-slate-600 hover:bg-slate-100 rounded-xl transition-colors"
                 >
