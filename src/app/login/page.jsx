@@ -4,11 +4,13 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import axios from "axios";
+import { useAuth } from "@/context/AuthContext";
 
 const API_URL = "https://api.magnateshop.uz/api/v1/auth/login";
 
 export default function LoginPage() {
   const router = useRouter();
+  const { login } = useAuth();
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -17,13 +19,13 @@ export default function LoginPage() {
 
   useEffect(() => {
     const accessToken = localStorage.getItem("AccessToken");
-    const refreshToken = localStorage.getItem("RefreshToken");
     const user = localStorage.getItem("User");
 
-    if (accessToken && refreshToken && user) {
+    if (accessToken && user) {
       router.replace("/dashboard");
     }
   }, [router]);
+
   async function handleSubmit(e) {
     e.preventDefault();
 
@@ -35,21 +37,21 @@ export default function LoginPage() {
         password
       });
 
-      localStorage.setItem("AccessToken", response.data.accessToken);
+      const token = response.data.accessToken || response.data.token || response.data.data?.accessToken;
+      const refreshToken = response.data.refreshToken || response.data.data?.refreshToken || "";
+      const userData = response.data.user || response.data.data?.user || { username };
 
-      localStorage.setItem("RefreshToken", response.data.refreshToken);
-
-      localStorage.setItem("User", JSON.stringify(response.data.user));
+      login(token, refreshToken, userData);
 
       toast.success("Muvaffaqiyatli login qilindi!", {
         position: "top-right",
-        autoClose: 2000,
-        theme: "success"
+        autoClose: 1500,
+        theme: "dark"
       });
 
       setTimeout(() => {
-        router.replace("/");
-      }, 2000);
+        router.replace("/dashboard");
+      }, 1500);
     } catch (error) {
       console.error(error);
 
