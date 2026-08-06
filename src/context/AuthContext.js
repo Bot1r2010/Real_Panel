@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState } from "react";
+import axios from "axios";
 
 const AuthContext = createContext();
 
@@ -15,33 +16,52 @@ export function AuthProvider({ children }) {
     const refresh = localStorage.getItem("RefreshToken");
     const userData = localStorage.getItem("User");
 
-    if (access && refresh && userData) {
+    if (access && userData) {
       setAccessToken(access);
-      setRefreshToken(refresh);
-      setUser(JSON.parse(userData));
+      if (refresh) setRefreshToken(refresh);
+      try {
+        setUser(JSON.parse(userData));
+      } catch (e) {
+        setUser(null);
+      }
     }
 
     setLoading(false);
   }, []);
 
   function login(access, refresh, userData) {
-    localStorage.setItem("AccessToken", access);
-    localStorage.setItem("RefreshToken", refresh);
-    localStorage.setItem("User", JSON.stringify(userData));
+    if (access) localStorage.setItem("AccessToken", access);
+    if (refresh) localStorage.setItem("RefreshToken", refresh);
+    if (userData) localStorage.setItem("User", JSON.stringify(userData));
 
     setAccessToken(access);
     setRefreshToken(refresh);
     setUser(userData);
   }
 
-  function logout() {
-    localStorage.removeItem("AccessToken");
-    localStorage.removeItem("RefreshToken");
-    localStorage.removeItem("User");
+  async function logout() {
+    try {
+      const token = localStorage.getItem("AccessToken");
+      if (token) {
+        await axios.post(
+          "https://api.magnateshop.uz/api/v1/auth/logout",
+          {},
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+      }
+    } catch (e) {
+      console.error("Logout API error:", e);
+    } finally {
+      localStorage.removeItem("AccessToken");
+      localStorage.removeItem("RefreshToken");
+      localStorage.removeItem("User");
 
-    setAccessToken(null);
-    setRefreshToken(null);
-    setUser(null);
+      setAccessToken(null);
+      setRefreshToken(null);
+      setUser(null);
+    }
   }
 
   return (
